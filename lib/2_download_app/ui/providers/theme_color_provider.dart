@@ -13,12 +13,13 @@ enum ThemeColor {
 }
 
 class ThemeColorProvider extends ChangeNotifier {
-  ThemeColor _currentThemeColor = ThemeColor.blue;
+ThemeColor currentThemeColor = ThemeColor.blue;
 
-  ThemeColor get currentThemeColor => _currentThemeColor;
 
   void setTheme(ThemeColor value) {
-    _currentThemeColor = value;
+    currentThemeColor = value;
     notifyListeners();
   }
 }
+final themeProvider = ThemeColorProvider(); 
+

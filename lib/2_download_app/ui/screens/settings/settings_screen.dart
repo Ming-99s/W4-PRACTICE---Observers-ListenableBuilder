@@ -10,46 +10,49 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = context.watch<ThemeColorProvider>();
-    final currentThemeColor = themeProvider.currentThemeColor;
-    return Container(
-      color: currentThemeColor.backgroundColor,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(height: 16),
-          Text(
-            "Settings",
-            style: AppTextStyles.heading.copyWith(
-              color: currentThemeColor.color,
-            ),
+    return ListenableBuilder(
+      listenable: themeProvider,
+      builder: (context, _) {
+        return Container(
+          color: themeProvider.currentThemeColor.backgroundColor,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 16),
+              Text(
+                "Settings",
+                style: AppTextStyles.heading.copyWith(
+                  color: themeProvider.currentThemeColor.color,
+                ),
+              ),
+
+              SizedBox(height: 50),
+
+              Text(
+                "Theme",
+                style: AppTextStyles.label.copyWith(color: AppColors.textLight),
+              ),
+
+              SizedBox(height: 10),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: ThemeColor.values
+                    .map(
+                      (theme) => ThemeColorButton(
+                        themeColor: theme,
+                        isSelected: theme == themeProvider.currentThemeColor,
+                        onTap: (value) {
+                          themeProvider.setTheme(value);
+                        },
+                      ),
+                    )
+                    .toList(),
+              ),
+            ],
           ),
-
-          SizedBox(height: 50),
-
-          Text(
-            "Theme",
-            style: AppTextStyles.label.copyWith(color: AppColors.textLight),
-          ),
-
-          SizedBox(height: 10),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: ThemeColor.values
-                .map(
-                  (theme) => ThemeColorButton(
-                    themeColor: theme,
-                    isSelected: theme == themeProvider.currentThemeColor,
-                    onTap: (value) {
-                      themeProvider.setTheme(value);
-                    },
-                  ),
-                )
-                .toList(),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
