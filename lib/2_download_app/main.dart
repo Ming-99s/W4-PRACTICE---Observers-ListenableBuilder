@@ -30,7 +30,6 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = context.watch<ThemeColorProvider>();
-    final currentThemeColor = themeProvider.currentThemeColor;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: appTheme,
@@ -44,7 +43,7 @@ class _MyAppState extends State<MyApp> {
               _currentIndex = index;
             });
           },
-          selectedItemColor: currentThemeColor.color,
+          selectedItemColor: themeProvider.currentThemeColor.color,
           items: [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Downloads'),
             BottomNavigationBarItem(

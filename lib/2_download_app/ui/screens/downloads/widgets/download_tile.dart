@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:week4/2_download_app/ui/theme/theme.dart';
 
 import 'download_controler.dart';
 
@@ -7,14 +6,10 @@ class DownloadTile extends StatelessWidget {
   const DownloadTile({
     super.key,
     required this.controller,
-    required this.title,
-    required this.size,
-    required this.onTap
+    required this.onTap,
   });
 
   final DownloadController controller;
-  final String title;
-  final int size;
   final Function() onTap;
 
   IconData _buildIcon() {
@@ -30,47 +25,50 @@ class DownloadTile extends StatelessWidget {
     }
   }
 
-  String _buildSubtitle() {
+  String? _buildSubtitle() {
+    final percentage = controller.progress * 100;
     switch (controller.status) {
       case DownloadStatus.notDownloaded:
-        return "$size MB";
+        return null;
 
       case DownloadStatus.downloading:
-        final downloaded = (size * controller.progress).toStringAsFixed(0);
-        return "$downloaded of $size MB";
+        final downloaded = (controller.ressource.size * controller.progress)
+            .toStringAsFixed(0);
+        
+        return "${percentage.toStringAsFixed(0)}% - $downloaded of ${controller.ressource.size} MB";
 
       case DownloadStatus.downloaded:
-        return "Completed of $size MB";
+        return "${percentage.toStringAsFixed(0)}% - Completed of ${controller.ressource.size} MB";
     }
   }
 
   // TODO
 
- @override
-Widget build(BuildContext context) {
-  return AnimatedBuilder(
-    animation: controller,
-    builder: (context, _) {
-      return GestureDetector(
-        onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.all(5),
-          margin: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: AppColors.greyLight,
-          ),
-          child: ListTile(
-            title: Text(title),
-            trailing: Icon(_buildIcon()),
-            subtitle: Text(
-              '${(controller.progress * 100).toStringAsFixed(0)}% - ${_buildSubtitle()}',
+  @override
+  Widget build(BuildContext context) {
+    return ListenableBuilder(
+      listenable: controller,
+      builder: (context, _) {
+        return GestureDetector(
+          onTap: onTap,
+          child: Container(
+            padding: const EdgeInsets.all(5),
+            margin: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Colors.white,
+            ),
+            child: ListTile(
+              title: Text(controller.ressource.name),
+              trailing: Icon(_buildIcon()),
+              subtitle: _buildSubtitle() != null
+                  ? Text(_buildSubtitle()!)
+                  : null,
             ),
           ),
-        ),
-      );
-    },
-  );
+        );
+      },
+    );
 
     // TODO
   }

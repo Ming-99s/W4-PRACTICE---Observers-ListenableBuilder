@@ -9,6 +9,7 @@ enum ThemeColor {
 
   final Color color;
   Color get backgroundColor => color.withAlpha(100);
+
 }
 
 class ThemeColorProvider extends ChangeNotifier {
