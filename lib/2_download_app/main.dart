@@ -8,7 +8,7 @@ import 'ui/theme/theme.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(create: (_) => ThemeColorProvider(), child: MyApp()),
+    const MyApp(),
   );
 }
 
